@@ -1,0 +1,21 @@
+
+param n;
+param m;
+
+param a{1..m,1..n}; 					#steps over the boards squares
+var square{1..n}, binary; 				#defines the square number
+
+minimize openedSquares:  sum{j in 1..n} square[j]; 	
+
+subject to accessPipe{j in 1..m}:			#1 represents that we have access to the pipe 
+	sum{i in 1..n} a[j,i] * square[i] >= 1; 	
+
+solve;
+
+printf{i in 1..n, j in 1..m: a[i,j]}: "Pos (%d,%d)\n",i, j;
+printf{j in SET: a[j]} " a(%d)=%.2f\n",j,a[j];
+printf "Optvariabler:"; printf{j in 1..n: a[j]} " %d",j; printf "\n";
+
+
+end;
+
